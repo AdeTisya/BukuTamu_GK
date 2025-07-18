@@ -70,118 +70,473 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Buku Tamu Pemkab Gunungkidul</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Jaro:wght@400&family=ABeeZee:wght@400&family=ADLaM+Display:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #00A700 0%, #193919 100%);
+            font-family: 'ABeeZee', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .background-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .welcome-title {
+            font-family: 'ADLaM Display', serif;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 20px 0;
+            line-height: 1.2;
+        }
+        
+        .welcome-image {
+            width: 200px;
+            height: 190px;
+            margin-bottom: 20px;
+        }
+        
+        .government-logo {
+            width: 70px;
+            height: 90px;
+
+        }
+        
+        .welcome-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* .elipse {
+        background: #E8F5E8;
+        border-radius: 100% 0% 100% 0%;
+        padding: 30px;
+        border: 1px solid rgba(255,255,255,0.3);
+        top: 50%;
+        left: 20%;
+        position: absolute;
+        position: relative;
+        overflow: hidden;
+    } */
+        
+        .form-container {
+            background: #E8F5E8;
+            border-radius: 100px 0 0 100px;
+            transition: border-radius 0.3s ease;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 2000px; /* atau sesuaikan */
+            height: auto; /* atau atur fixed height jika perlu */
+        }
+
+
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            50% { transform: translateX(-50%) translateY(-50%) rotate(180deg); }
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #2E7D32;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 25px;
+            border: 2px solid #E8F5E8;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 0.2rem rgba(76,175,80,0.25);
+            background: white;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(46,125,50,0.3);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46,125,50,0.4);
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+        }
+        
+        .photo-section {
+            background: #E8F5E8;
+            border-radius: 20px;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .photo-preview {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            border: 3px solid #E8F5E8;
+            object-fit: cover;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        
+        .btn-capture {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.3);
+        }
+        
+        .btn-capture:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,107,0.4);
+            background: linear-gradient(135deg, #FF5252 0%, #FF6B6B 100%);
+        }
+        
+        .photo-label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #2E7D32;
+            font-size: 0.9rem;
+        }
+        
+        .contact-section {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 20px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-item i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .alert {
+            border-radius: 15px;
+            border: none;
+            font-weight: 500;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, #F44336 0%, #FF6B6B 100%);
+            color: white;
+        }
+        
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+            border: none;
+        }
+        
+        .camera-view {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn-camera {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            padding: 10px 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-camera:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76,175,80,0.4);
+        }
+        
+        @media (max-width: 768px) {
+        .form-container {
+            border-radius: 30px 30px 0 0; /* Atas kanan 30px, atas kiri 30px, bawah kanan 0, bawah kiri 0 */
+            padding: 20px;
+            max-width: 100%;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+        }
+        
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .contact-item {
+            margin: 10px 0;
+            display: block;
+        }
+    }
+    </style>
 </head>
 <body>
     <?php if ($message): ?>
-        <div class="message <?php echo $message_type; ?>">
-            <?php echo $message; ?>
+        <div class="alert alert-<?= $message_type === 'success' ? 'success' : 'danger' ?> alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($message) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
 
-    <main class="main-container">
+    <div class="main-container">
         <div class="background-accent"></div>
-        <div class="form-background-ellipse"></div>
-        <section class="visitor-form-container">
-            <form class="visitor-form" method="POST" enctype="multipart/form-data">
-                <!-- Name and Instansi fields side by side -->
-                <div class="form-field name-field">
-                    <label class="field-label name-label">Nama :</label>
-                    <input type="text" id="nama" name="nama" placeholder="Contoh : Tisya" required>
+        <div class="container">
+            <div class="row">
+                <!-- Left Column - Welcome Section -->  
+                <div class="col-lg-4 col-md-12">
+                    <img class="government-logo" src="../assets/logoGk.png" alt="Logo Kabupaten Gunungkidul" >
+                    <div class="welcome-section">
+                        <img class="welcome-image" src="../assets/iconGk.png" alt="Welcome illustration">
+                        <h1 class="welcome-title">Selamat Datang di Portal Buku Tamu Pemkab Gunungkidul</h1>
+                        <img >
+                        <p class="welcome-description">Silakan lengkapi data kunjungan Anda untuk keperluan dokumentasi dan pelayanan.</p>
+                    </div>
                 </div>
                 
-                <div class="form-field instansi-field">
-                    <label class="field-label instansi-label"> Dari  :</label>
-                    <input type="text" id="instansi" name="instansi" placeholder="Contoh : PT. Handayani (Bapak Alex)">
+                <!-- Right Column - Form and Photo Section -->
+                <div class="col-lg-8 col-md-12">
+                    <div class="elipse"></div>
+                    <div class="form-container">
+                        <div class="row">
+                            <!-- Form Column -->
+                            <div class="col-lg-8 col-md-7">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="nama" class="form-label">Nama :</label>
+                                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Contoh : Tisya" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="instansi" class="form-label">Dari :</label>
+                                        <input type="text" class="form-control" id="instansi" name="instansi" placeholder="Contoh : PT. Handayani (Bapak Alex)">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="jam_datang" class="form-label">Jam Datang :</label>
+                                        <input type="text" class="form-control" id="jam_datang" name="jam_datang" value="<?= date('H:i') ?>" readonly>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Alamat/asal :</label>
+                                        <div class="row">
+                                            <div class="col-12 mb-2">
+                                                <select class="form-select" id="kabupaten" name="kabupaten" required>
+                                                    <option value="" disabled selected>Pilih Kabupaten</option>
+                                                    <?php foreach ($kabupaten as $kab): ?>
+                                                        <option value="<?= $kab ?>"><?= $kab ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <select class="form-select" id="kecamatan" name="kecamatan" required disabled>
+                                                    <option value="" disabled selected>Pilih Kecamatan</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <select class="form-select" id="desa" name="desa" required disabled>
+                                                    <option value="" disabled selected>Pilih Desa</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="no_telp" class="form-label">No.telp :</label>
+                                        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Contoh: 081390123163" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin :</label>
+                                        <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                                            <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                            <option value="Laki-laki">Laki-laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="keperluan" class="form-label">Keperluan :</label>
+                                        <input type="text" class="form-control" id="keperluan" name="keperluan" placeholder="Contoh : Mengirim surat undangan" required>
+                                    </div>
+                                    
+                                    <input type="hidden" id="foto_data" name="foto_data">
+                                    
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-submit">
+                                            <i class="fas fa-paper-plane me-2"></i>KIRIM
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Photo Column -->
+                            <div class="col-lg-4 col-md-5">
+                                <div class="photo-section">
+                                    <h5 class="text-center mb-3" style="color: #2E7D32;">Ambil Foto</h5>
+                                    <img id="photo-preview" class="photo-preview" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23f8f9fa'/%3E%3Ccircle cx='100' cy='100' r='40' fill='%236c757d'/%3E%3Cpath d='M100 80 L100 120 M80 100 L120 100' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" alt="Photo preview">
+                                    <div class="text-center mt-3">
+                                        <button type="button" class="btn btn-capture" id="open-camera">
+                                            <i class="fas fa-camera me-2"></i>Capture
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Time field -->
-                <div class="form-field time-field">
-                    <label class="field-label time-label">Jam Datang :</label>
-                    <input type="text" id="jam_datang" name="jam_datang" value="<?= date('H:i') ?>" readonly>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <div class="contact-item">
+                            <i class="fab fa-instagram"></i>
+                            <span>kominfoGunungkidul</span>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>kominfo@Gunungkidulkab.go.id</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Address fields -->
-                <div class="form-field address-field">
-                    <label class="field-label address-label">Alamat/asal :</label>
-                    <select id="kabupaten" name="kabupaten" required>
-                        <option value="" disabled selected>Kabupaten</option>
-                        <?php foreach ($kabupaten as $kab): ?>
-                            <option value="<?= $kab ?>"><?= $kab ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    
-                    <select id="kecamatan" name="kecamatan" required disabled>
-                        <option value="" disabled selected>Kecamatan</option>
-                    </select>
-                    
-                    <select id="desa" name="desa" required disabled>
-                        <option value="" disabled selected>Desa</option>
-                    </select>
-                </div>
-                
-                <!-- Phone field -->
-                <div class="form-field phone-field">
-                    <label class="field-label phone-label">No.telp :</label>
-                    <input type="text" id="no_telp" name="no_telp" placeholder="Contoh: 081390123163" required>
-                </div>
-                
-                <!-- Gender field -->
-                <div class="form-field gender-field">
-                    <label class="field-label gender-label">Jenis Kelamin :</label>
-                    <select id="jenis_kelamin" name="jenis_kelamin" required>
-                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                        <option value="Laki-laki">Laki-laki</option>
-                        <option value="Perempuan">Perempuan</option>
-                    </select>
-                </div>
-                
-                <!-- Purpose field -->
-                <div class="form-field purpose-field">
-                    <label class="field-label purpose-label">Keperluan : </label>
-                    <input type="text" id="keperluan" name="keperluan" placeholder="Contoh : Mengirim surat undangan" required>
-                </div>
-                
-                <input type="hidden" id="foto_data" name="foto_data">
-                
-                <button type="submit" class="submit-button">KIRIM</button>
-            </form>
-        </section>
-
-        <section class="photo-capture-section">
-            <img id="photo-preview" class="photo-preview" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='317' height='316' viewBox='0 0 317 316'%3E%3Crect width='315' height='314' x='1' y='1' fill='%23ddd' stroke='%23000' stroke-width='2'/%3E%3Ctext x='50%' y='50%' font-family='Arial' font-size='16' text-anchor='middle' dominant-baseline='middle' fill='%23666'%3EFoto Preview%3C/text%3E%3C/svg%3E" alt="Photo preview">
-
-            <button type="button" class="capture-button" id="open-camera">Capture</button>
-            <label class="photo-label">Ambil Foto</label>
-        </section>
-
-        <header class="welcome-section">
-            <img class="welcome-image" src="../assets/iconGk.png" alt="Welcome illustration">
-            <h1 class="welcome-title">Selamat Datang di Portal Buku Tamu Pemkab Gunungkidul</h1>
-            <img class="government-logo" src="../assets/logoGk.png" alt="Logo Kabupaten Gunungkidul">
-            <p class="welcome-description">Silakan lengkapi data kunjungan Anda untuk keperluan dokumentasi dan pelayanan.</p>
-        </header>
-
-        <footer class="contact-section">
-            <img class="instagram-icon" src="../assets/IG.webp" alt="Welcome illustration" width="30" height="30">
-            <img class="email-icon" width="30" height="30" viewBox="0 0 30 30" fill="none" src="../assets/email.png">
-            <span class="contact-email">kominfo@Gunungkidulkab.go.id</span>
-            <span class="social-handle">kominfoGunungkidul</span>
-        </footer>
-    </main>
-
-    <!-- Camera Modal -->
-    <div id="camera-modal" class="modal">
-        <span id="close-camera">&times;</span>
-        <div class="modal-content">
-            <video id="camera-view" autoplay playsinline></video>
-            <button id="capture-btn">Ambil Foto</button>
-            <canvas id="camera-canvas" style="display:none;"></canvas>
+            </div>
         </div>
     </div>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Camera Modal -->
+    <div class="modal fade" id="camera-modal" tabindex="-1" aria-labelledby="cameraModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cameraModalLabel">
+                        <i class="fas fa-camera me-2"></i>Ambil Foto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <video id="camera-view" class="camera-view" autoplay playsinline></video>
+                    <canvas id="camera-canvas" style="display:none;"></canvas>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-camera" id="capture-btn">
+                        <i class="fas fa-camera me-2"></i>Ambil Foto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // Update arrival time every second
         function updateTime() {
@@ -207,7 +562,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const kecamatanSelect = document.getElementById('kecamatan');
             
             if (kabupaten) {
-                kecamatanSelect.innerHTML = '<option value="" disabled selected>Kecamatan</option>';
+                kecamatanSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan</option>';
                 
                 const kecamatanList = <?= json_encode($kecamatan) ?>;
                 
@@ -230,7 +585,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const desaSelect = document.getElementById('desa');
             
             if (kecamatan) {
-                desaSelect.innerHTML = '<option value="" disabled selected>Desa</option>';
+                desaSelect.innerHTML = '<option value="" disabled selected>Pilih Desa</option>';
                 
                 const desaList = <?= json_encode($desa) ?>;
                 const selectedDesa = desaList[kecamatan] || [];
@@ -249,9 +604,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
 
         // Camera functionality
-        const cameraModal = document.getElementById('camera-modal');
+        const cameraModal = new bootstrap.Modal(document.getElementById('camera-modal'));
         const openCameraBtn = document.getElementById('open-camera');
-        const closeCameraBtn = document.getElementById('close-camera');
         const cameraView = document.getElementById('camera-view');
         const captureBtn = document.getElementById('capture-btn');
         const cameraCanvas = document.getElementById('camera-canvas');
@@ -262,7 +616,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         openCameraBtn.addEventListener('click', async () => {
             try {
-                cameraModal.style.display = 'block';
+                cameraModal.show();
                 stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { 
                         facingMode: 'environment',
@@ -278,8 +632,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
         
-        closeCameraBtn.addEventListener('click', () => {
-            cameraModal.style.display = 'none';
+        document.getElementById('camera-modal').addEventListener('hidden.bs.modal', function() {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
             }
@@ -300,16 +653,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             fotoDataInput.value = imageData;
             
             // Close camera
-            cameraModal.style.display = 'none';
+            cameraModal.hide();
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
             }
         });
         
-        // Auto-close success/error message after 5 seconds
+        // Auto-close alert after 5 seconds
         setTimeout(() => {
-            const messages = document.querySelectorAll('.message');
-            messages.forEach(msg => msg.style.display = 'none');
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
         }, 5000);
     </script>
 </body>
